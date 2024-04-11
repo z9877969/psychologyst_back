@@ -16,7 +16,7 @@ const createTgMessage = (orderData) => {
         }`
     );
   }, '');
-  const total = `<b>Загалом:</b> ${orderData.totalPrice}грн${
+  const total = `<b>Загалом:</b> ${orderData.orderSum}грн${
     orderData.promocode
       ? `\n${minTab}<b>Промокод:</b> ` + orderData.promocode
       : ''
@@ -26,7 +26,7 @@ const createTgMessage = (orderData) => {
       : ''
   }${
     orderData.discount
-      ? `\n${minTab}<b>Сума зі знижкою:</b> ` + orderData.saleTotal
+      ? `\n${minTab}<b>Сума зі знижкою:</b> ` + orderData.discountedOrerSum
       : ''
   }`;
   const delivery = `

@@ -2,12 +2,13 @@ const { generatePromoCode, createError } = require('../helpers');
 const { Promocode, User } = require('../models');
 const { promocodesServices: s } = require('../services');
 
-const createPromocode = async (req, res, next) => {
+const createPromocodeList = async (req, res, next) => {
   try {
     /* {
-      userPhone
-      discount
-      dedline
+      phone,
+      discount,
+      dedline,
+      
     } = body */
     const { discount } = req.body;
     const promocode = generatePromoCode(10);
@@ -41,22 +42,20 @@ const createPromocode = async (req, res, next) => {
 
 const createFirstOrderPromocode = async (req, res, next) => {
   try {
-    const { userPhone } = req.body;
-    const user = await User.findOne({ phone: userPhone }).populate(
-      'firstBuyPromo'
-    );
+    const { phone } = req.body;
+    const user = await User.findOne({ phone }).populate('firstBuyPromo');
     console.log(user);
     if (user && !user?.firstBuyPromo && !user?.canFirstBuyPromo) {
       throw createError(400, 'First promo has alredy used');
     }
     const response = {};
     if (!user) {
-      const promocode = await s.createPromocode({
+      const promocode = await s.createFirstBuyPromocode({
         discount: 10,
-        isFirstBuyPromo: true,
+        userPhone: phone,
       });
       const newUser = await User.create({
-        phone: userPhone,
+        phone,
         firstBuyPromo: promocode._id,
       });
       response.promocode = promocode.code;
@@ -72,7 +71,20 @@ const createFirstOrderPromocode = async (req, res, next) => {
   }
 };
 
+const getPromocodeDiscount = async (req, res, next) => {
+  try {
+    const { code } = req.params;
+    const discount = await s.getPromocodeDiscount(code);
+    res.json({
+      discount,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
-  createPromocode,
+  createPromocodeList,
   createFirstOrderPromocode,
+  getPromocodeDiscount,
 };

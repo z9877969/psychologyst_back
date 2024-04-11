@@ -1,6 +1,6 @@
 const { createRouter } = require('../../helpers');
 const { promocodeControllers: c } = require('../../controllers');
-const { validateBody } = require('../../helpers/validateBody');
+const { validateBody, validateParams } = require('../../helpers');
 const { promocodeSchemas: schema } = require('../../schemas');
 
 const promocodeRouter = createRouter({
@@ -17,6 +17,12 @@ const promocodeRouter = createRouter({
       route: '/first',
       middlewares: [validateBody(schema.firstOrderValidating)],
       controller: c.createFirstOrderPromocode,
+    },
+    {
+      method: 'get',
+      route: '/:code/discount',
+      middlewares: [validateParams(schema.promocodeDiscountValidating)],
+      controller: c.getPromocodeDiscount,
     },
   ],
 });

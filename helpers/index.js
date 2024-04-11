@@ -1,11 +1,15 @@
 const { createError } = require('./createError');
 const { createRouter } = require('./createRouter');
 const { createTgMessage } = require('./createTgMessage');
-const { generatePromoCode } = require('./generatePromocode');
+const { validateParams } = require('./validateParams');
+const { validateBody } = require('./validateBody');
+const { generateOrderNum } = require('./generateOrderNum');
 
 module.exports = {
   createError,
   createRouter,
   createTgMessage,
-  generatePromoCode,
+  validateParams,
+  validateBody,
+  generateOrderNum,
 };

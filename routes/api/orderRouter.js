@@ -1,5 +1,5 @@
 const { createRouter } = require('../../helpers');
-const { monobankControllers: c } = require('../../controllers');
+const { orderControllers: c } = require('../../controllers');
 
 const oredrRouter = createRouter({
   //   `defaultMiddlewares: null,`
@@ -8,7 +8,13 @@ const oredrRouter = createRouter({
       method: 'post',
       route: '/',
       middlewares: null,
-      controller: c.sendPayment,
+      controller: c.createOrder,
+    },
+    {
+      method: 'post',
+      route: '/:orderId/acquiring/webhook',
+      middlewares: null,
+      controller: c.checkOrderPayment,
     },
   ],
 });

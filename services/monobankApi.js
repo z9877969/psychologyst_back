@@ -1,7 +1,24 @@
 const axios = require('axios');
-const {monobank: mono} = require('../constants');
+const { monobank: mono } = require('../constants');
+const {
+  MONOBANK_CALLBACK_URL,
+  MONOBANK_RESPONSE_URL,
+  MONOBANK_TOKEN,
+} = require('../envConfigs');
 
+const instance = axios.create({
+  // /merchant/invoice/create
+  // baseURL: 'https://api.monobank.ua/personal/checkout/order/',
+  baseURL: 'https://api.monobank.ua/api',
+  headers: {
+    'x-token': MONOBANK_TOKEN,
+    'Content-Type': 'application/json',
+  },
+});
 
+const path = {
+  CREATE_INVOICE: '/merchant/invoice/create',
+};
 
 const getPaymentData = ({
   orderId,
@@ -31,9 +48,9 @@ price: curProductPriceTotal // x Вартість товару
     mono.PAYMENT_METHOD_LIST.CARD,
     mono.PAYMENT_METHOD_LIST.PAYMENT_ON_DELIVERY,
   ],
-  callback_url: 'http://localhost:3023/api/mono/response', // урл, куди буде повертатись інформація по замовленню
+  callback_url: MONOBANK_CALLBACK_URL + '/api/mono/response', // урл, куди буде повертатись інформація по замовленню
 
-  return_url: 'https://brush-buddy.netlify.app', // урл, куди буде повертатись клієнт - після замовлення
+  return_url: MONOBANK_RESPONSE_URL + '/thank', // урл, куди буде повертатись клієнт - після замовлення
 });
 
 /* 
@@ -46,26 +63,44 @@ response example:
 } 
 */
 
-const sendPayment = async ({
-  orderId,
-  orderTotalPrice,
-  productsTotalAmount,
-  productsList,
-  ccy = 980,
-}) => {
-  try {
-    const data = getPaymentData({
-      orderId,
-      orderTotalPrice,
-      productsTotalAmount,
-      productsList,
-      ccy,
-    });
+// const sendPayment = async ({
+//   orderId,
+//   orderTotalPrice,
+//   productsTotalAmount,
+//   productsList,
+//   ccy = 980,
+// }) => {
+//   try {
+//     const data = getPaymentData({
+//       orderId,
+//       orderTotalPrice,
+//       productsTotalAmount,
+//       productsList,
+//       ccy,
+//     });
 
-    console.log(data);
-  } catch (error) {
-    next(error);
-  }
+//     const response = await instance.post('/', data);
+//     return response;
+//   } catch (error) {
+//     console.log(error);
+//     throw error;
+//   }
+// };
+const sendPayment = async ({ amount, orderNum }) => {
+  const body = {
+    amount: amount * 100,
+    ccy: 980,
+    redirectUrl: 'https://www.brushbuddy.com.ua/thank',
+    webHookUrl: 'http://localhost:4040/order/:orderId/acquiring/webhook',
+    validity: 3600,
+    paymentType: 'debit',
+    merchantPaymInfo: {
+      reference: orderNum,
+    },
+  };
+  const { data } = await instance.post(path.CREATE_INVOICE, body);
+
+  return data.pageUrl;
 };
 
 module.exports = {
