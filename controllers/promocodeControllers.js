@@ -1,6 +1,6 @@
 const { generatePromoCode, createError } = require('../helpers');
 const { Promocode, User } = require('../models');
-const { promocodesServices: s } = require('../services');
+const { promocodeServices: s } = require('../services');
 
 const createPromocodeList = async (req, res, next) => {
   try {

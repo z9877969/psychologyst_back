@@ -1,7 +1,7 @@
 const { createRouter } = require('../../helpers');
-const { buyerControllers: c } = require('../../controllers');
+const { userControllers: c } = require('../../controllers');
 
-const userRouter = createRouter({
+const usersRouter = createRouter({
   //   `defaultMiddlewares: null,`
   options: [
     {
@@ -13,6 +13,6 @@ const userRouter = createRouter({
   ],
 });
 
-userRouter.setRouter();
+usersRouter.setRouter();
 
-module.exports.userRouter = userRouter.router;
+module.exports.usersRouter = usersRouter.router;

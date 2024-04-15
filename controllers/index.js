@@ -1,9 +1,15 @@
 const promocodeControllers = require('./promocodeControllers');
-const buyerControllers = require('./buyerControllers');
+const userControllers = require('./userControllers');
 const orderControllers = require('./orderControllers');
+const categoryControllers = require('./categoryControllers');
+const makerControllers = require('./makerControllers');
+const productsControllers = require('./productsControllers');
 
 module.exports = {
   promocodeControllers,
-  buyerControllers,
-  orderControllers
+  userControllers,
+  orderControllers,
+  categoryControllers,
+  makerControllers,
+  productsControllers,
 };

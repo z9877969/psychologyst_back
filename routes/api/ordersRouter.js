@@ -1,7 +1,7 @@
 const { createRouter } = require('../../helpers');
 const { orderControllers: c } = require('../../controllers');
 
-const oredrRouter = createRouter({
+const ordersRouter = createRouter({
   //   `defaultMiddlewares: null,`
   options: [
     {
@@ -19,6 +19,6 @@ const oredrRouter = createRouter({
   ],
 });
 
-oredrRouter.setRouter();
+ordersRouter.setRouter();
 
-module.exports.oredrRouter = oredrRouter.router;
+module.exports.ordersRouter = ordersRouter.router;

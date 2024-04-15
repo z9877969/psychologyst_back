@@ -3,7 +3,7 @@ const { promocodeControllers: c } = require('../../controllers');
 const { validateBody, validateParams } = require('../../helpers');
 const { promocodeSchemas: schema } = require('../../schemas');
 
-const promocodeRouter = createRouter({
+const promocodesRouter = createRouter({
   //   `defaultMiddlewares: null,`
   options: [
     {
@@ -27,6 +27,6 @@ const promocodeRouter = createRouter({
   ],
 });
 
-promocodeRouter.setRouter();
+promocodesRouter.setRouter();
 
-module.exports.promocodeRouter = promocodeRouter.router;
+module.exports.promocodesRouter = promocodesRouter.router;
