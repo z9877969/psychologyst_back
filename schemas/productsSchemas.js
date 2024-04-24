@@ -6,12 +6,14 @@ const { AGE, USER_TYPE, WATERMARK } = products;
 
 // Схема для об'єкта з полями title і list
 const itemsWithTitleSchema = Joi.object({
+  id: Joi.string().required,
   title: Joi.string().required(),
   items: Joi.array().items(Joi.string()).required(),
 });
 
 // Схема для об'єкта з полем paragraph
 const paragraphSchema = Joi.object({
+  id: Joi.string().required,
   paragraph: Joi.string().required(),
 });
 
