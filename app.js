@@ -5,6 +5,8 @@ const { promocodesRouter } = require('./routes/api/promocodesRouter');
 const { usersRouter } = require('./routes/api/usersRouter');
 const { ordersRouter } = require('./routes/api/ordersRouter');
 const { productsRouter } = require('./routes/api/productsRouter');
+const { variantsRouter } = require('./routes/api/variantsRouter');
+const { filtersRouter } = require('./routes/api/filtersRouter');
 
 const app = express();
 app.use(morgan('tiny'));
@@ -15,6 +17,8 @@ app.use('/api/promos', promocodesRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/orders', ordersRouter);
 app.use('/api/products', productsRouter);
+app.use('/api/variants', variantsRouter);
+app.use('/api/filters', filtersRouter);
 
 app.use((_, res, __) => {
   res.status(404).json({ message: 'Invalid route' });

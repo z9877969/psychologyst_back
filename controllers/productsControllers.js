@@ -5,11 +5,24 @@ const path = require('path');
 
 const getAllProducts = async (_, res, next) => {
   try {
-    const products = await Product.find({})
+    const products = await Product.find({}, '-createdAt -updatedAt')
       .populate('category')
       .populate('maker')
-      .populate('variants');
+      .populate('variants', '-createdAt -updatedAt');
     res.json(products);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getProductById = async (req, res, next) => {
+  try {
+    const { productId } = req.params;
+    const product = await Product.findById(productId, '-createdAt -updatedAt')
+      .populate('category')
+      .populate('maker')
+      .populate('variants', '-createdAt -updatedAt');
+    res.json(product);
   } catch (error) {
     next(error);
   }
@@ -17,81 +30,51 @@ const getAllProducts = async (_, res, next) => {
 
 const addProduct = async (req, res, next) => {
   try {
-    const product = await Product.create(req.body);
+    const { _doc } = await Product.create(req.body);
+    const { createdAt, updatedAt, ...product } = _doc;
     res.status(201).json(product);
   } catch (error) {
     next(error);
   }
 };
 
-const addProductVariant = async (req, res, next) => {
+const updateProduct = async (req, res, next) => {
   try {
-    const { body, params } = req;
-    const { id } = params;
-    const product = Product.findById(id);
-    if (!product) {
-      throw createError(404, 'Product not found');
-    }
-    const variant = await Variant.create(body);
-    const updatedProduct = await Product.findByIdAndUpdate(id, {
-      $push: { variants: variant._id },
-    });
-    res.status(201).json({ variant, productId: updatedProduct._id });
+    const { id } = req.params;
+    const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+      new: true,
+      projection: { createdAt: 0, updatedAt: 0, variants: 0 },
+    })
+      .populate('category')
+      .populate('maker');
+    res.json(updatedProduct);
   } catch (error) {
     next(error);
   }
 };
 
-const updateProductVariant = async (req, res, next) => {
+const deleteProduct = async (req, res, next) => {
   try {
-    const { body, params } = req;
-    const { prodId, varId } = params;
-    const product = Product.findById(prodId);
-    if (!product) {
+    const { id } = req.params;
+    const deletedProduct = await Product.findByIdAndDelete(id);
+    if (!deleteProduct) {
       throw createError(404, 'Product not found');
     }
-    const variant = await Variant.findByIdAndUpdate(varId, body, { new: true });
-    res.status(201).json(variant);
+    await Variant.deleteMany({ product: deletedProduct._id });
+    res.json({ _id: deleteProduct._id });
   } catch (error) {
     next(error);
   }
 };
 
-const updateVariantImages = async (req, res, next) => {
+const getProductVariantsList = async (req, res, next) => {
   try {
-    const { files } = req;
-    if (!files.length) {
-      throw createError(400, 'Files not transferred');
-    }
-    const filenames = files.map((el) => el.filename);
-    // ===
-    const promises = filenames.map(async (el) => {
-      try {
-        await fs.rename(
-          path.resolve('temp', el),
-          path.resolve('public/images', el)
-        );
-        return path.join('/images', el);
-      } catch (error) {
-        throw error;
-      } finally {
-        // fs.unlink(path.resolve('temp', el));
-      }
-    });
-    const promiseData = await Promise.allSettled(promises);
-    const newPathes = promiseData.map(({ value }) => value);
-
-    // ===
-    const { varId } = req.params;
-    const variant = await Variant.findByIdAndUpdate(varId, {
-      $push: {
-        images: { $each: newPathes },
-      },
-    });
-    if (!variant) {
-      throw createError(404, 'Variant not found');
-    }
-    res.json(variant);
+    const { id } = req.params;
+    const { variants } = await Product.findById(id, 'variants').populate(
+      'variants',
+      '-createdAt -updatedAt'
+    );
+    res.json(variants);
   } catch (error) {
     next(error);
   }
@@ -99,8 +82,9 @@ const updateVariantImages = async (req, res, next) => {
 
 module.exports = {
   getAllProducts,
+  getProductById,
   addProduct,
-  addProductVariant,
-  updateProductVariant,
-  updateVariantImages,
+  updateProduct,
+  deleteProduct,
+  getProductVariantsList,
 };

@@ -1,18 +1,7 @@
 const { Schema, model } = require('mongoose');
 const { products } = require('../constants');
-const Joi = require('joi');
 
 const { USER_TYPE, WATERMARK, AGE } = products;
-
-const itemsWithTitleSchema = new Schema({
-  title: String,
-  items: [String],
-});
-
-// Вкладена схема для об'єкта з полем paragraph
-const paragraphSchema = new Schema({
-  paragraph: String,
-});
 
 const productSchema = new Schema(
   {
@@ -28,25 +17,6 @@ const productSchema = new Schema(
       type: Array,
       required: false,
       default: [],
-      // validate: [
-      //   {
-      //     validator: function (value) {
-      //       const result = mainSchema.validate(value);
-      //       return !result.error;
-      //     },
-      //     message: 'Invalid data for dynamicField',
-      //     // validator: function (arr) {
-      //     //   // Перевіряємо, чи масив містить лише об'єкти titleListSchema або paragraphSchema
-      //     //   return arr.every((item) => {
-      //     //     return (
-      //     //       item instanceof itemsWithTitleSchema ||
-      //     //       item instanceof paragraphSchema
-      //     //     );
-      //     //   });
-      //     // },
-      //     // message: (props) => `${props.value} не є вірним типом`,
-      //   },
-      // ],
     },
     recomendation: {
       type: String,
@@ -89,6 +59,10 @@ const productSchema = new Schema(
       ],
       default: [],
       required: false,
+    },
+    images: {
+      type: Array,
+      default: []
     },
   },
   {

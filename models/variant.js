@@ -5,19 +5,19 @@ const variantSchema = new Schema(
   {
     color: {
       type: String,
-      default: null,
+      default: '',
     },
     flavor: {
       type: String,
-      default: null,
+      default: '',
     },
     volume: {
       type: String,
-      default: null,
+      default: '',
     },
     marker: {
       type: String,
-      default: null,
+      default: '#abc123',
     },
     price: {
       type: Number,
@@ -34,13 +34,17 @@ const variantSchema = new Schema(
     },
     watermark: {
       type: String,
-      enum: [WATERMARK.WOW, WATERMARK.SALE],
-      default: null,
+      enum: [WATERMARK.WOW, WATERMARK.SALE, ''],
+      default: '',
     },
     images: {
       type: [String],
       required: false,
       default: [],
+    },
+    product: {
+      type: Schema.Types.ObjectId,
+      ref: 'product',
     },
   },
   {

@@ -1,7 +1,7 @@
 const { createRouter, validateBody, validateParams } = require('../../helpers');
 const { productsControllers: c } = require('../../controllers');
 const {
-  productsSchemas: { productAddingSchema },
+  productsSchemas: { productAddingSchema, productUpdatingSchema },
 } = require('../../schemas');
 const { isValidId, upload } = require('../../middlewares');
 
@@ -15,26 +15,34 @@ const productsRouter = createRouter({
       controller: c.getAllProducts,
     },
     {
+      method: 'get',
+      route: '/:productId',
+      middlewares: [isValidId],
+      controller: c.getProductById,
+    },
+    {
       method: 'post',
       route: '/',
       middlewares: [validateBody(productAddingSchema)],
       controller: c.addProduct,
     },
     {
-      method: 'post',
+      method: 'patch',
       route: '/:id',
-      middlewares: [isValidId],
-      controller: c.addProductVariant,
+      middlewares: [isValidId, validateBody(productUpdatingSchema)],
+      controller: c.updateProduct,
     },
     {
-      method: 'post',
-      route: '/images/:varId',
-      middlewares: [isValidId, upload.variantImages.array('images', 8)],
-      controller: c.updateVariantImages,
-      // controller: (req, res) => {
-      //   console.log('files :>> ', req.files);
-      //   res.json('updateVariantImages is OK');
-      // },
+      method: 'delete',
+      route: '/:id',
+      middlewares: [isValidId],
+      controller: c.deleteProduct,
+    },
+    {
+      method: 'get',
+      route: '/:id/variants',
+      middlewares: [isValidId],
+      controller: c.getProductVariantsList,
     },
   ],
 });
