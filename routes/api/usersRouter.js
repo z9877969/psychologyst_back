@@ -5,6 +5,12 @@ const usersRouter = createRouter({
   //   `defaultMiddlewares: null,`
   options: [
     {
+      method: 'get',
+      route: '/',
+      middlewares: null,
+      controller: c.getUsers,
+    },
+    {
       method: 'patch',
       route: '/',
       middlewares: null,
