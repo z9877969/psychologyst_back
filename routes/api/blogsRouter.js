@@ -15,7 +15,7 @@ const blogsRouter = createRouter({
       method: 'get',
       route: '/:id',
       middlewares: [isValidId],
-      controller: c.getBlogs,
+      controller: c.getOneBlog,
     },
     {
       method: 'post',
