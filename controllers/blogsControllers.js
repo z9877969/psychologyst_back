@@ -11,7 +11,7 @@ const getBlogs = async (req, res, next) => {
 
 const getOneBlog = async (req, res, next) => {
   try {
-    const { id } = rq.params;
+    const { id } = req.params;
     const blogs = await Blog.findById(id, '-createdAt -updatedAt');
     res.json(blogs);
   } catch (error) {
