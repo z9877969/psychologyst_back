@@ -16,7 +16,7 @@ const loginUser = async (req, res, next) => {
       throw createError(403, "Email doesn't exist / Password is wrong");
     }
 
-    const { token } = tools.token.create(
+    const token = tools.token.create(
       {
         id: user._id,
       },
@@ -40,6 +40,10 @@ const loginUser = async (req, res, next) => {
 
 const registerUser = async (req, res, next) => {
   try {
+    const findedUser = await User.findOne({ email: req.body.email });
+    if (findedUser) {
+      throw createError(409);
+    }
     const user = await User.create({
       ...req.body,
       password: await tools.password.hash(req.body.password, 10),
