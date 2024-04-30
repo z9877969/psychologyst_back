@@ -1,6 +1,6 @@
 const { createRouter } = require('../../helpers');
 const { pagesControllers: c } = require('../../controllers');
-const { isValidId } = require('../../middlewares');
+const { isValidId, authenticate } = require('../../middlewares');
 
 const pagesRouter = createRouter({
   //   `defaultMiddlewares: null,
@@ -14,19 +14,19 @@ const pagesRouter = createRouter({
     {
       method: 'post',
       route: '/',
-      middlewares: null,
+      middlewares: [authenticate],
       controller: c.addPage,
     },
     {
       method: 'patch',
       route: '/:id',
-      middlewares: [isValidId],
+      middlewares: [isValidId, authenticate],
       controller: c.updatePage,
     },
     {
       method: 'delete',
       route: '/:id',
-      middlewares: [isValidId],
+      middlewares: [isValidId, authenticate],
       controller: c.deletePage,
     },
   ],

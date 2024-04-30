@@ -1,6 +1,6 @@
 const { createRouter } = require('../../helpers');
 const { blogsControllers: c } = require('../../controllers');
-const { isValidId } = require('../../middlewares');
+const { isValidId, authenticate } = require('../../middlewares');
 
 const blogsRouter = createRouter({
   //   `defaultMiddlewares: null,
@@ -14,19 +14,19 @@ const blogsRouter = createRouter({
     {
       method: 'post',
       route: '/',
-      middlewares: null,
+      middlewares: [authenticate],
       controller: c.addBlog,
     },
     {
       method: 'patch',
       route: '/:id',
-      middlewares: [isValidId],
+      middlewares: [isValidId, authenticate],
       controller: c.updateBlog,
     },
     {
       method: 'delete',
       route: '/:id',
-      middlewares: [isValidId],
+      middlewares: [isValidId, authenticate],
       controller: c.deleteBlog,
     },
   ],

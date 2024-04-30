@@ -1,6 +1,6 @@
 const { createRouter } = require('../../helpers');
 const { feedbacksControllers: c } = require('../../controllers');
-const { isValidId } = require('../../middlewares');
+const { isValidId, authenticate } = require('../../middlewares');
 
 const feedbackRouter = createRouter({
   //   `defaultMiddlewares: null,
@@ -8,7 +8,7 @@ const feedbackRouter = createRouter({
     {
       method: 'get',
       route: '/',
-      middlewares: null,
+      middlewares: [authenticate],
       controller: c.getFeedbacks,
     },
     {
@@ -26,13 +26,13 @@ const feedbackRouter = createRouter({
     {
       method: 'patch',
       route: '/:id',
-      middlewares: [isValidId],
+      middlewares: [isValidId, authenticate],
       controller: c.updateFeedbackShowing,
     },
     {
       method: 'delete',
       route: '/:id',
-      middlewares: [isValidId],
+      middlewares: [isValidId, authenticate],
       controller: c.deleteFeedback,
     },
   ],

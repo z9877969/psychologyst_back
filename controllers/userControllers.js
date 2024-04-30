@@ -1,7 +1,6 @@
 const { User } = require('../models');
 const { SECRET_KEY } = require('../envConfigs');
 const { createError, credentialTools: tools } = require('../helpers');
-const { password } = require('../helpers/credentialTools');
 
 const loginUser = async (req, res, next) => {
   try {
@@ -43,7 +42,7 @@ const registerUser = async (req, res, next) => {
   try {
     const user = await User.create({
       ...req.body,
-      password: tools.password.hash(req.body.password, 10),
+      password: await tools.password.hash(req.body.password, 10),
     });
     res.status(201).json({ email: user.email });
   } catch (error) {
