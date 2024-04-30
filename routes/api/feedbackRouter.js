@@ -1,37 +1,43 @@
 const { createRouter } = require('../../helpers');
-const { blogsControllers: c } = require('../../controllers');
+const { feedbacksControllers: c } = require('../../controllers');
 const { isValidId } = require('../../middlewares');
 
-const blogsRouter = createRouter({
+const feedbackRouter = createRouter({
   //   `defaultMiddlewares: null,
   options: [
     {
       method: 'get',
       route: '/',
       middlewares: null,
-      controller: c.getBlogs,
+      controller: c.getFeedbacks,
+    },
+    {
+      method: 'get',
+      route: '/visible',
+      middlewares: null,
+      controller: c.getVisibleFeedbacks,
     },
     {
       method: 'post',
       route: '/',
       middlewares: null,
-      controller: c.addBlog,
+      controller: c.addFeedback,
     },
     {
       method: 'patch',
       route: '/:id',
       middlewares: [isValidId],
-      controller: c.updateBlog,
+      controller: c.updateFeedbackShowing,
     },
     {
       method: 'delete',
       route: '/:id',
       middlewares: [isValidId],
-      controller: c.deleteBlog,
+      controller: c.deleteFeedback,
     },
   ],
 });
 
-blogsRouter.setRouter();
+feedbackRouter.setRouter();
 
-module.exports.blogsRouter = blogsRouter.router;
+module.exports.feedbackRouter = feedbackRouter.router;

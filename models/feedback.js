@@ -1,24 +1,24 @@
 const { Schema, model } = require('mongoose');
 
-const promocodeSchema = new Schema(
+const feedbackSchema = new Schema(
   {
-    userPhone: {
-      type: String,
-      default: '',
-    },
-    code: {
+    name: {
       type: String,
       required: true,
     },
-    discount: {
-      type: Number,
+    phone: {
+      type: String,
       required: true,
     },
-    dedline: {
+    age: {
       type: String,
-      default: '',
+      required: true,
     },
-    isFirstBuyPromo: {
+    text: {
+      type: String,
+      required: true,
+    },
+    isShow: {
       type: Boolean,
       default: false,
     },
@@ -26,4 +26,4 @@ const promocodeSchema = new Schema(
   { timestamps: true, versionKey: false }
 );
 
-module.exports.Promocode = model('promocode', promocodeSchema);
+module.exports.Feedback = model('feedback', feedbackSchema);

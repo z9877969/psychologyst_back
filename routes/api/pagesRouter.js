@@ -1,37 +1,37 @@
 const { createRouter } = require('../../helpers');
-const { blogsControllers: c } = require('../../controllers');
+const { pagesControllers: c } = require('../../controllers');
 const { isValidId } = require('../../middlewares');
 
-const blogsRouter = createRouter({
+const pagesRouter = createRouter({
   //   `defaultMiddlewares: null,
   options: [
     {
       method: 'get',
       route: '/',
       middlewares: null,
-      controller: c.getBlogs,
+      controller: c.getPages,
     },
     {
       method: 'post',
       route: '/',
       middlewares: null,
-      controller: c.addBlog,
+      controller: c.addPage,
     },
     {
       method: 'patch',
       route: '/:id',
       middlewares: [isValidId],
-      controller: c.updateBlog,
+      controller: c.updatePage,
     },
     {
       method: 'delete',
       route: '/:id',
       middlewares: [isValidId],
-      controller: c.deleteBlog,
+      controller: c.deletePage,
     },
   ],
 });
 
-blogsRouter.setRouter();
+pagesRouter.setRouter();
 
-module.exports.blogsRouter = blogsRouter.router;
+module.exports.pagesRouter = pagesRouter.router;

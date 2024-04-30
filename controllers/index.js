@@ -1,17 +1,11 @@
-const promocodeControllers = require('./promocodeControllers');
-const userControllers = require('./userControllers');
-const orderControllers = require('./orderControllers');
-const productsControllers = require('./productsControllers');
-const variantsControllers = require('./variantsControllers');
-const filtersControllers = require('./filtersControllers');
 const blogsControllers = require('./blogsControllers');
+const orderControllers = require('./orderControllers');
+const feedbacksControllers = require('./feedbacksControllers');
+const pagesControllers = require('./pagesControllers');
 
 module.exports = {
-  promocodeControllers,
-  userControllers,
-  orderControllers,
-  productsControllers,
-  variantsControllers,
-  filtersControllers,
   blogsControllers,
+  orderControllers,
+  feedbacksControllers,
+  pagesControllers,
 };

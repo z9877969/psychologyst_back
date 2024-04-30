@@ -9,16 +9,6 @@ const getBlogs = async (req, res, next) => {
   }
 };
 
-const getOneBlog = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-    const blogs = await Blog.findById(id, '-createdAt -updatedAt');
-    res.json(blogs);
-  } catch (error) {
-    next(error);
-  }
-};
-
 const addBlog = async (req, res, next) => {
   try {
     const { _doc } = await Blog.create(req.body);
@@ -53,7 +43,6 @@ const deleteBlog = async (req, res, next) => {
 
 module.exports = {
   getBlogs,
-  getOneBlog,
   addBlog,
   updateBlog,
   deleteBlog,
