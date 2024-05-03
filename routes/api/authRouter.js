@@ -2,7 +2,7 @@ const { createRouter } = require('../../helpers');
 const { userControllers: c } = require('../../controllers');
 const authenticate = require('../../middlewares/authenticate');
 
-const userRouter = createRouter({
+const authRouter = createRouter({
   //   `defaultMiddlewares: null,
   options: [
     {
@@ -23,9 +23,15 @@ const userRouter = createRouter({
       middlewares: [authenticate],
       controller: c.logoutUser,
     },
+    {
+      method: 'get',
+      route: '/current',
+      middlewares: [authenticate],
+      controller: c.getCurUser,
+    },
   ],
 });
 
-userRouter.setRouter();
+authRouter.setRouter();
 
-module.exports.userRouter = userRouter.router;
+module.exports.authRouter = authRouter.router;

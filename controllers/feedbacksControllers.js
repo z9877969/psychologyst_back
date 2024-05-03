@@ -35,15 +35,15 @@ const addFeedback = async (req, res, next) => {
 const updateFeedbackShowing = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { show } = req.query;
-    const isShow = show === 'true' ? true : show === 'false' ? false : null;
-    if (!isShow) {
+    const { show } = req.body;
+    // const isShow = show === 'true' ? true : show === 'false' ? false : null;
+    if (typeof show !== 'boolean') {
       throw createError(400, 'Bad request show must have any true or false');
     }
     const feedback = await Feedback.findByIdAndUpdate(
-      req.params.id,
+      id,
       {
-        isShow,
+        isShow: show,
       },
       { new: true, projection: { updatedAt: 0, createdAt: 0 } }
     );

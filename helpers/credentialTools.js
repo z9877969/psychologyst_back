@@ -1,14 +1,15 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { createError } = require('./createError');
 
 const create = (payload, secretKey, expiresIn = '1h') => {
   const token = jwt.sign(payload, secretKey, { expiresIn });
   return token;
 };
 
-const verify = async (token, secretKey) => {
+const verify = (token, secretKey) => {
   try {
-    return await jwt.verify(token, secretKey);
+    return jwt.verify(token, secretKey);
   } catch (error) {
     throw createError(401, 'Not authorized');
   }

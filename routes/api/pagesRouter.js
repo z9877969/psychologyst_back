@@ -7,7 +7,7 @@ const pagesRouter = createRouter({
   options: [
     {
       method: 'get',
-      route: '/',
+      route: '/:pageName',
       middlewares: null,
       controller: c.getPages,
     },

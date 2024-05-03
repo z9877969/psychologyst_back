@@ -63,4 +63,12 @@ const logoutUser = async (req, res, next) => {
   }
 };
 
-module.exports = { loginUser, logoutUser, registerUser };
+const getCurUser = async (req, res, next) => {
+  try {
+    res.json({ email: req.user.email });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { loginUser, logoutUser, registerUser, getCurUser };

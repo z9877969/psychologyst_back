@@ -2,7 +2,11 @@ const { Page } = require('../models');
 
 const getPages = async (req, res, next) => {
   try {
-    const pages = await Page.find({}, '-createdAt -updatedAt');
+    const { pageName } = req.params;
+    const pages = await Page.findOne(
+      { page: pageName },
+      '-createdAt -updatedAt'
+    );
     res.json(pages);
   } catch (error) {
     next(error);
@@ -22,7 +26,10 @@ const addPage = async (req, res, next) => {
 const updatePage = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const page = await Page.findByIdAndUpdate(id, req.body, { new: true });
+    const page = await Page.findByIdAndUpdate(id, req.body, {
+      new: true,
+      projection: { updatedAt: 0 },
+    });
 
     res.json(page);
   } catch (error) {

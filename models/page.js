@@ -2,9 +2,14 @@ const { Schema, model } = require('mongoose');
 
 const pageSchema = new Schema(
   {
-    sections: {
-      type: Array,
-      required: true,
+    videoSection: {
+      videoUrl: String,
+    },
+    sertificateSection: {
+      list: Array,
+    },
+    myHelpSection: {
+      list: Array,
     },
   },
   {
