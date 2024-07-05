@@ -20,7 +20,7 @@ const pageSchema = new Schema(
         type: String,
         default: null,
       },
-      descr: String
+      descr: String,
     },
     sertificateSection: {
       title: String,
@@ -29,6 +29,8 @@ const pageSchema = new Schema(
     },
     quote1Section: {},
     myHelpSection: {
+      title: String,
+      descr: String,
       list: Array,
     },
     problemSection: {},
